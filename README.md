@@ -1,4 +1,4 @@
-# DOF Exam 2019.02.10 / 2019.02.17
+# DOF Exam 2019.02.10 / 2019.02.17 / 2019.04.07
 Exam Repository for DevOps Fundamentals Course @ SoftUni
 
 Set of three Docker containters each with dedicated role - php, redis, and nginx, that form a simple web application.
