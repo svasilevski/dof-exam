@@ -7,7 +7,6 @@ metadata:
   name: manual
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
-storageClassName: manual
 
 ---
 
