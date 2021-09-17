@@ -165,7 +165,7 @@ metadata:
     io.kompose.service: nginx-host
   name: nginx-host
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       io.kompose.service: nginx-host
