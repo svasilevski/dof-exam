@@ -164,8 +164,7 @@ spec:
       restartPolicy: Always
       volumes:
         - name: php-host-claim0
-          persistentVolumeClaim:
-            claimName: php-host-claim0
+          emptyDir: {}
 status: {}
 
 ---
@@ -210,8 +209,7 @@ spec:
       restartPolicy: Always
       volumes:
         - name: nginx-host-claim0
-          persistentVolumeClaim:
-            claimName: nginx-host-claim0
+          emptyDir: {}
 status: {}
 
 
