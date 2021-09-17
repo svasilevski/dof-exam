@@ -203,6 +203,7 @@ metadata:
     io.kompose.service: nginx-host
   name: nginx-host
 spec:
+  type: NodePort
   ports:
     - name: "80"
       port: 80
