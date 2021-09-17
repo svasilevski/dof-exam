@@ -7,6 +7,8 @@ metadata:
   name: manual
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
+spec:
+  storageClassName: manual
 
 ---
 
@@ -39,6 +41,7 @@ metadata:
     io.kompose.service: php-host-claim0
   name: php-host-claim0
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
@@ -58,6 +61,7 @@ metadata:
     io.kompose.service: nginx-host-claim0
   name: nginx-host-claim0
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
