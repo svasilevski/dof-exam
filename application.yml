@@ -1,0 +1,231 @@
+# PHP volume
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: php-host-claim0
+  name: php-host-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+
+#NGINX Volume
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx-host-claim0
+  name: nginx-host-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+
+---
+
+# Redis Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis-host
+  name: redis-host
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: redis-host
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: redis-host
+    spec:
+      containers:
+        - image: redis:latest
+          name: redis-host
+          resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+
+# PHP Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: php-host
+  name: php-host
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: php-host
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: php-host
+    spec:
+      containers:
+        - image: svasilevski/php-host:%IMAGE-PLACEHOLDER%
+          name: php-host
+          ports:
+            - containerPort: 9000
+          resources: {}
+          volumeMounts:
+            - mountPath: /site
+              name: php-host-claim0
+      restartPolicy: Always
+      volumes:
+        - name: php-host-claim0
+          persistentVolumeClaim:
+            claimName: php-host-claim0
+status: {}
+
+---
+
+# NGINX Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx-host
+  name: nginx-host
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: nginx-host
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: nginx-host
+    spec:
+      containers:
+        - image: svasilevski/nginx-host:%IMAGE-PLACEHOLDER%
+          name: nginx-host
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /site
+              name: nginx-host-claim0
+      restartPolicy: Always
+      volumes:
+        - name: nginx-host-claim0
+          persistentVolumeClaim:
+            claimName: nginx-host-claim0
+status: {}
+
+
+---
+
+# PHP Service 
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: php-host
+  name: php-host
+spec:
+  ports:
+    - name: "9000"
+      port: 9000
+      targetPort: 9000
+  selector:
+    io.kompose.service: php-host
+status:
+  loadBalancer: {}
+
+---
+
+# NGINX Service
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx-host
+  name: nginx-host
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+      nodePort: 30080
+  selector:
+    io.kompose.service: nginx-host
+status:
+  loadBalancer: {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
