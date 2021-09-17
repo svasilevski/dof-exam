@@ -13,7 +13,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/vagrant"
+    path: "/mnt/data"
 
 # PHP volume
 
