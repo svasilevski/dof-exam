@@ -1,4 +1,14 @@
-# Create storage class
+# Create 2 storage classes
+
+apiVersion: v1
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: manual
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+---
 
 apiVersion: v1
 kind: StorageClass
